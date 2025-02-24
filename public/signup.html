@@ -1,0 +1,267 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Document Service</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        secondary: '#6366F1'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '4px',
+                        DEFAULT: '8px',
+                        'md': '12px',
+                        'lg': '16px',
+                        'xl': '20px',
+                        '2xl': '24px',
+                        '3xl': '32px',
+                        'full': '9999px',
+                        'button': '8px'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        .floating-label {
+            transform-origin: 0 0;
+            transition: all 0.2s ease;
+        }
+        .input-focused .floating-label,
+        .input-filled .floating-label {
+            transform: translateY(-1.5rem) scale(0.85);
+            color: #4F46E5;
+        }
+        .input-field {
+            transition: all 0.2s ease;
+        }
+        .input-field:focus {
+            border-color: #4F46E5;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease forwards;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <div class="flex min-h-screen">
+        <div class="hidden lg:flex lg:w-1/2 relative bg-white items-center justify-center overflow-hidden">
+            <nav class="fixed top-0 left-0 right-0 bg-white shadow-sm z-50">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex justify-between h-16 items-center">
+                        <div class="flex-shrink-0">
+                            <span class="text-2xl font-['Pacifico'] text-primary">Aldovave</span>
+                        </div>
+                       
+                        <div class="flex items-center space-x-4">
+                            <button onclick="window.location.href='/index.html'" class="px-4 py-2 text-primary hover:text-primary/80 whitespace-nowrap !rounded-button">Home</button>
+                            
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <img src="./Images/auth/signup/signup.jpg" 
+                 alt="Document Service Illustration"
+                 class="w-4/5 h-auto object-contain fade-in">
+        </div>
+        
+        <div class="w-full lg:w-1/2 flex items-center justify-center px-6 py-12 lg:px-8">
+            <div class="w-full max-w-md space-y-8 fade-in">
+                <div class="text-center">
+                    <h2 class="mt-6 text-3xl font-bold tracking-tight text-gray-900">Welcome back</h2>
+                    <p class="mt-2 text-sm text-gray-600">Please sign in to your account</p>
+                </div>
+
+                <form class="mt-8 space-y-6" id="signupForm">
+                    <div class="space-y-4">
+                        <div class="relative">
+                            <div class="flex absolute inset-y-0 left-0 pl-3 items-center pointer-events-none">
+                                <i class="ri-user-line text-gray-400"></i>
+                            </div>
+                            <input type="email" id="email" name="email" required
+                                class="input-field block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-button text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-20"
+                                placeholder=" email">
+                        </div>
+
+                        <div class="relative">
+                            <div class="flex absolute inset-y-0 left-0 pl-3 items-center pointer-events-none">
+                                <i class="ri-lock-line text-gray-400"></i>
+                            </div>
+                            <input type="password" id="password" name="password" required
+                                class="input-field block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-button text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-20"
+                                placeholder="Password">
+                            <button type="button" id="togglePassword" 
+                                class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                <i class="ri-eye-line text-gray-400"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                   
+
+                    <div>
+                        <button type="submit" id="loginButton"
+                            class="!rounded-button relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors duration-200">
+                            <span id="buttonText">Sign in</span>
+                            <p class="error" id="error"></p>
+                            <span id="loadingSpinner" class="hidden">
+                                <i class="ri-loader-4-line animate-spin"></i>
+                            </span>
+                        </button>
+                    </div>
+                </form>
+
+                <div class="mt-6">
+                    <div class="relative">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-gray-300"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-2 bg-white text-gray-500">Or continue with</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 grid grid-cols-3 gap-3">
+                        <button onclick="window.location.href='/auth/google'" type="button" id="google-login"
+                            class="!rounded-button w-full py-2 px-4 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                            <i class="ri-google-fill text-lg"></i>
+                        </button>
+                        <button type="button"
+                            class="!rounded-button w-full py-2 px-4 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                            <i class="ri-apple-fill text-lg"></i>
+                        </button>
+                        <button type="button"
+                            class="!rounded-button w-full py-2 px-4 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                            <i class="ri-github-fill text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+                <p class="mt-6 text-center text-sm text-gray-600">
+                    Already have an account?
+                    <a href="/login.html" class="font-medium text-primary hover:text-secondary">Login</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification" class="fixed top-4 right-4 max-w-sm w-full bg-white shadow-lg rounded-button pointer-events-auto hidden fade-in">
+        <div class="p-4">
+            <div class="flex items-start">
+                <div class="flex-shrink-0" id="notificationIcon"></div>
+                <div class="ml-3 w-0 flex-1">
+                    <p class="text-sm font-medium text-gray-900" id="notificationTitle"></p>
+                    <p class="mt-1 text-sm text-gray-500" id="notificationMessage"></p>
+                </div>
+                <div class="ml-4 flex-shrink-0 flex">
+                    <button class="bg-white rounded-button inline-flex text-gray-400 hover:text-gray-500 focus:outline-none" id="closeNotification">
+                        <i class="ri-close-line"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        const loginButton = document.getElementById('loginButton');
+        const buttonText = document.getElementById('buttonText');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const notification = document.getElementById('notification');
+        const notificationIcon = document.getElementById('notificationIcon');
+        const notificationTitle = document.getElementById('notificationTitle');
+        const notificationMessage = document.getElementById('notificationMessage');
+        const closeNotification = document.getElementById('closeNotification');
+
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            togglePassword.innerHTML = type === 'password' ? 
+                '<i class="ri-eye-line text-gray-400"></i>' : 
+                '<i class="ri-eye-off-line text-gray-400"></i>';
+        });
+
+        function showNotification(type, title, message) {
+            notificationIcon.innerHTML = type === 'success' ? 
+                '<i class="ri-checkbox-circle-line text-green-500 text-xl"></i>' : 
+                '<i class="ri-error-warning-line text-red-500 text-xl"></i>';
+            notificationTitle.textContent = title;
+            notificationMessage.textContent = message;
+            notification.classList.remove('hidden');
+            setTimeout(() => {
+                notification.classList.add('hidden');
+            }, 3000);
+        }
+
+        closeNotification.addEventListener('click', () => {
+            notification.classList.add('hidden');
+        });
+
+       
+        document.querySelectorAll('.input-field').forEach(input => {
+            const wrapper = input.parentElement;
+            
+            input.addEventListener('focus', () => {
+                wrapper.classList.add('input-focused');
+            });
+
+            input.addEventListener('blur', () => {
+                if (!input.value) {
+                    wrapper.classList.remove('input-focused');
+                }
+            });
+            input.addEventListener('input', () => {
+                if (input.value) {
+                    wrapper.classList.add('input-filled');
+                } else {
+                    wrapper.classList.remove('input-filled');
+                }
+            });
+        });
+       
+
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const response = await fetch('/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        if (!response.ok) {
+          throw new Error(await response.text());
+        }
+
+        window.location.href = '/profile.html';
+      } catch (error) {
+        document.getElementById('error').textContent = error.message;
+      }
+    });
+    </script>
+</body>
+</html> 
+

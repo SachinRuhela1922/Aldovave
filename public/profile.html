@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aldovave Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563EB',
+                        secondary: '#64748B'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '4px',
+                        DEFAULT: '8px',
+                        'md': '12px',
+                        'lg': '16px',
+                        'xl': '20px',
+                        '2xl': '24px',
+                        '3xl': '32px',
+                        'full': '9999px',
+                        'button': '8px'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            min-width: 200px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            z-index: 1000;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        @media (max-width: 767px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease-in-out;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <nav class="fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-100 z-50">
+        <div class="flex items-center justify-between h-full px-6">
+            <div class="flex items-center space-x-2">
+                <button id="menu-toggle" class="md:hidden text-gray-600 hover:text-primary focus:outline-none">
+                    <i class="ri-menu-line text-xl"></i>
+                </button>
+                <span class="text-2xl text-primary font-['Pacifico']">logo</span>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <div class="text-gray-600 hidden sm:block">
+                    
+                </div>
+                <div class="dropdown relative">
+                    <button class="w-8 h-8 flex items-center justify-center text-gray-600 hover:bg-gray-100 rounded-full">
+                        <i class="ri-user-3-line text-xl"></i>
+                    </button>
+                    <div class="dropdown-content">
+                        <div class="py-2">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile Settings</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Security</a>
+                            <a href="/logout" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <aside class="sidebar fixed left-0 top-16 bottom-0 w-72 bg-white border-r border-gray-100 overflow-y-auto md:w-64 lg:w-72 z-40">
+        <div class="p-6">
+            <div class="flex items-center space-x-3 mb-8">
+                <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
+                    <i class="ri-user-3-line text-2xl text-gray-600"></i>
+                </div>
+                <div>
+                    <div class="text-sm font-medium text-gray-900">John Smith</div>
+                    <div class="text-sm text-gray-500"><span id="email"></span></div>
+                </div>
+            </div>
+            <nav class="space-y-1">
+                <a href="#" class="flex items-center space-x-3 px-4 py-3 text-primary bg-blue-50 rounded-lg">
+                    <i class="ri-home-4-line"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                    <i class="ri-id-card-line"></i>
+                    <span>Update Aadhaar Address</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                    <i class="ri-passport-line"></i>
+                    <span>Passport Renewal</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                    <i class="ri-file-list-3-line"></i>
+                    <span>Document Verification</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                    <i class="ri-money-dollar-circle-line"></i>
+                    <span>Payment History</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                    <i class="ri-customer-service-2-line"></i>
+                    <span>Support</span>
+                </a>
+            </nav>
+        </div>
+    </aside>
+
+    <main class="pt-16 md:ml-64 lg:ml-72 min-h-screen">
+        <div class="p-4 sm:p-6 md:p-8">
+            <div class="mb-8">
+                <h1 class="text-2xl sm:text-3xl font-semibold text-gray-900 mb-2">Welcome to Aldovave!</h1>
+                <p class="text-gray-600 text-sm sm:text-base">Manage your document updates easily and securely.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
+                <div class="bg-white p-4 sm:p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                        <i class="ri-id-card-line text-2xl text-primary"></i>
+                    </div>
+                    <h3 class="text-base sm:text-lg font-medium text-gray-900 mb-2">Update Aadhaar Address</h3>
+                    <p class="text-gray-600 text-sm sm:text-base mb-4">Update your Aadhaar card address quickly and easily with our streamlined process.</p>
+                    <button class="bg-primary text-white px-4 py-2 rounded-button hover:bg-blue-700 transition-colors w-full sm:w-auto">Start Service</button>
+                    
+                </div>
+
+                <div class="bg-white p-4 sm:p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                        <i class="ri-passport-line text-2xl text-primary"></i>
+                    </div>
+                    <h3 class="text-base sm:text-lg font-medium text-gray-900 mb-2">Passport Renewal</h3>
+                    <p class="text-gray-600 text-sm sm:text-base mb-4">Renew your passport without the hassle. Simple online process with quick turnaround.</p>
+                    <button class="bg-primary text-white px-4 py-2 rounded-button hover:bg-blue-700 transition-colors w-full sm:w-auto">Start Service</button>
+                </div>
+
+                <div class="bg-white p-4 sm:p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                        <i class="ri-file-list-3-line text-2xl text-primary"></i>
+                    </div>
+                    <h3 class="text-base sm:text-lg font-medium text-gray-900 mb-2">Document Verification</h3>
+                    <p class="text-gray-600 text-sm sm:text-base mb-4">Get your documents verified quickly with our secure verification process.</p>
+                    <button class="bg-primary text-white px-4 py-2 rounded-button hover:bg-blue-700 transition-colors w-full sm:w-auto">Start Service</button>
+                </div>
+
+                <div class="bg-white p-4 sm:p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                        <i class="ri-customer-service-2-line text-2xl text-primary"></i>
+                    </div>
+                    <h3 class="text-base sm:text-lg font-medium text-gray-900 mb-2">24/7 Support</h3>
+                    <p class="text-gray-600 text-sm sm:text-base mb-4">Get help anytime with our dedicated support team ready to assist you.</p>
+                    <button class="bg-primary text-white px-4 py-2 rounded-button hover:bg-blue-700 transition-colors w-full sm:w-auto">Contact Support</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const sidebar = document.querySelector('.sidebar');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (!sidebar.contains(e.target) && !menuToggle.contains(e.target) && sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+            }
+        });
+
+        // Load profile data on page load
+        async function loadProfileData() {
+            try {
+                const response = await fetch('/profile', {
+                    credentials: 'include' // Include session cookies
+                });
+                
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        // Redirect to login page if unauthorized
+                        window.location.href = '/login.html';
+                        return;
+                    }
+                    throw new Error('Failed to fetch profile data: ' + response.status);
+                }
+
+                const data = await response.json();
+                
+                // Set email in the navbar
+                document.getElementById('email').textContent = data.user.email;
+
+                // If you want to display collection data later, add a <ul id="collection-list"> element
+                // For now, we'll skip this part since it’s not in the HTML
+            } catch (error) {
+                console.error('Error loading profile data:', error.message);
+            }
+        }
+
+        window.onload = loadProfileData;
+    </script>
+</body>
+</html>
