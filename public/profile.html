@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aldovave Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#2563EB",
+              secondary: "#64748B",
+            },
+            borderRadius: {
+              none: "0px",
+              sm: "4px",
+              DEFAULT: "8px",
+              md: "12px",
+              lg: "16px",
+              xl: "20px",
+              "2xl": "24px",
+              "3xl": "32px",
+              full: "9999px",
+              button: "8px",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      :where([class^="ri-"])::before {
+        content: "\f3c2";
+      }
+      .dropdown-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+      }
+      .dropdown.active .dropdown-content {
+        max-height: 600px; /* Adjust based on content */
+      }
+      .dropdown-arrow {
+        transition: transform 0.3s ease;
+      }
+      .dropdown.active .dropdown-arrow {
+        transform: rotate(180deg);
+      }
+      .nested-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+      }
+      .nested-dropdown.active .nested-content {
+        max-height: 400px; /* Adjust based on content */
+      }
+      .nested-dropdown button:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+      @media (max-width: 767px) {
+        .sidebar {
+          transform: translateX(-100%);
+          transition: transform 0.3s ease-in-out;
+        }
+        .sidebar.open {
+          transform: translateX(0);
+        }
+      }
+      .sidebar {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+        overflow-y: auto; /* Enable scrolling if content overflows */
+      }
+      .sidebar::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, and Opera */
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 min-h-screen">
+    <nav
+      class="fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-100 z-50"
+    >
+      <div class="flex items-center justify-between h-full px-6">
+        <div class="flex items-center space-x-2">
+          <button
+            id="menu-toggle"
+            class="md:hidden text-gray-600 hover:text-primary focus:outline-none"
+          >
+            <i class="ri-menu-line text-xl"></i>
+          </button>
+          <span class="text-2xl text-primary font-['Pacifico']">Aldovave</span>
+        </div>
+        <div class="flex items-center space-x-4">
+          <div class="text-gray-600 hidden sm:block"></div>
+          <div class="dropdown relative">
+            <button
+              class="w-8 h-8 flex items-center justify-center text-gray-600 hover:bg-gray-100 rounded-full"
+            >
+              <i class="ri-user-3-line text-xl"></i>
+            </button>
+            <div class="dropdown-content">
+              <div class="py-2">
+                <a
+                  href="#"
+                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >Profile Settings</a
+                >
+                <a
+                  href="#"
+                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >Security</a
+                >
+                <a
+                  href="/logout"
+                  class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                  >Logout</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <aside
+      class="sidebar fixed left-0 top-16 bottom-0 w-72 bg-white border-r border-gray-100 md:w-64 lg:w-72 z-40"
+    >
+      <div class="p-6">
+        <div class="flex items-center space-x-3 mb-8">
+          <div
+            class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center"
+          >
+            <i class="ri-user-3-line text-2xl text-gray-600"></i>
+          </div>
+          <div>
+            <div class="text-sm font-medium text-gray-900">User ID</div>
+            <div class="text-sm text-gray-500"><span id="email"></span></div>
+          </div>
+        </div>
+        <nav class="space-y-1">
+          <a
+            href="#"
+            data-section="dashboard"
+            class="sidebar-link flex items-center space-x-3 px-4 py-3 text-primary bg-blue-50 rounded-lg"
+          >
+            <i class="ri-home-4-line"></i>
+            <span>Dashboard</span>
+          </a>
+          <a
+            href="#"
+            data-section="aadhaar"
+            class="sidebar-link flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg"
+          >
+            <i class="ri-id-card-line"></i>
+            <span>Aadhaar Update Services</span>
+          </a>
+          <a
+            href="#"
+            data-section="passport"
+            class="sidebar-link flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg"
+          >
+            <i class="ri-passport-line"></i>
+            <span>Passport Update Services</span>
+          </a>
+          <a
+            href="#"
+            data-section="exam"
+            class="sidebar-link flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg"
+          >
+            <i class="ri-file-list-3-line"></i>
+            <span>Exam Form Submission</span>
+          </a>
+          <a
+            href="#"
+            data-section="visa"
+            class="sidebar-link flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg"
+          >
+            <i class="ri-money-dollar-circle-line"></i>
+            <span>Visa Application Services</span>
+          </a>
+          <a
+            href="#"
+            data-section="government"
+            class="sidebar-link flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg"
+          >
+            <i class="ri-customer-service-2-line"></i>
+            <span>Government Schemes and Benefits</span>
+          </a>
+          <a
+            href="#"
+            data-section="driving"
+            class="sidebar-link flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg"
+          >
+            <i class="ri-car-line"></i>
+            <span>Driving License Services</span>
+          </a>
+          <a
+            href="#"
+            data-section="pancard"
+            class="sidebar-link flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg"
+          >
+            <i class="ri-bank-card-line"></i>
+            <span>PAN Card Services</span>
+          </a>
+          <a
+            href="#"
+            data-section="voter"
+            class="sidebar-link flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg"
+          >
+            <i class="ri-user-voice-line"></i>
+            <span>Voter ID Update Services</span>
+          </a>
+          <a
+            href="#"
+            data-section="income"
+            class="sidebar-link flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg"
+          >
+            <i class="ri-money-dollar-box-line"></i>
+            <span>Income Tax Services</span>
+          </a>
+          <a
+            href="#"
+            data-section="birth"
+            class="sidebar-link flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg"
+          >
+            <i class="ri-file-text-line"></i>
+            <span>Birth and Death Certificate Services</span>
+          </a>
+          <a
+            href="#"
+            data-section="bill"
+            class="sidebar-link flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg"
+          >
+            <i class="ri-bill-line"></i>
+            <span>Utility Bill Payments</span>
+          </a>
+          <a
+            href="#"
+            data-section="health"
+            class="sidebar-link flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg"
+          >
+            <i class="ri-heart-pulse-line"></i>
+            <span>Health Insurance and Medical Card Update</span>
+          </a>
+        </nav>
+      </div>
+    </aside>
+
+    <main class="pt-16 md:ml-64 lg:ml-72 min-h-screen">
+      <div id="content" class="p-4 sm:p-6 md:p-8">
+        <section class="pt-24 pb-16 relative overflow-hidden">
+          <div
+            class="absolute inset-0 bg-[url('https://public.readdy.ai/ai/img_res/c8d220f4da933dfea0b57a2ddb59cf2c.jpg')] bg-cover bg-center opacity-10"
+          ></div>
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div
+              class="flex flex-col md:flex-row items-center justify-between gap-12"
+            >
+              <div class="flex-1 text-center md:text-left">
+                <h1 class="text-5xl font-bold text-gray-900 mb-6">
+                  Welcome to Aldovave
+                </h1>
+                <p class="text-xl text-gray-600 mb-8">
+                  Simplify your document updates with our intelligent platform.
+                  Manage Aadhaar, passport, exam forms, and more - all in one
+                  place.
+                </p>
+                <div
+                  class="flex flex-wrap gap-4 justify-center md:justify-start"
+                >
+                  <button
+                    class="bg-primary text-white px-8 py-3 !rounded-button text-lg hover:bg-primary/90 whitespace-nowrap"
+                  >
+                    Get Started
+                  </button>
+                  <button
+                    class="border border-gray-300 text-gray-700 px-8 py-3 !rounded-button text-lg hover:bg-gray-50 whitespace-nowrap"
+                  >
+                    Learn More
+                  </button>
+                </div>
+              </div>
+              <div class="flex-1">
+                <img
+                  src="https://public.readdy.ai/ai/img_res/2ab7edbf376e1a5b5cff0e0cdf211ec2.jpg"
+                  alt="Document Management"
+                  class="w-full h-auto rounded-2xl shadow-2xl"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="py-16 bg-gray-50">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">
+              Our Services
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div
+                class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow"
+              >
+                <div
+                  class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-full mb-4"
+                >
+                  <i class="ri-id-card-line text-primary text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                  Aadhaar Update
+                </h3>
+                <p class="text-gray-600">
+                  Update your Aadhaar card details quickly and securely through
+                  our verified platform.
+                </p>
+              </div>
+              <div
+                class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow"
+              >
+                <div
+                  class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-full mb-4"
+                >
+                  <i class="ri-passport-line text-primary text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                  Passport Renewal
+                </h3>
+                <p class="text-gray-600">
+                  Effortlessly renew your passport with our streamlined digital
+                  process.
+                </p>
+              </div>
+              <div
+                class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow"
+              >
+                <div
+                  class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-full mb-4"
+                >
+                  <i class="ri-file-list-3-line text-primary text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                  Exam Forms
+                </h3>
+                <p class="text-gray-600">
+                  Submit major examination forms easily with our guided
+                  application process.
+                </p>
+              </div>
+              <div
+                class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow"
+              >
+                <div
+                  class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-full mb-4"
+                >
+                  <i class="ri-visa-line text-primary text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                  Visa Application
+                </h3>
+                <p class="text-gray-600">
+                  Track and manage your visa applications with real-time status
+                  updates.
+                </p>
+              </div>
+              <div
+                class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow"
+              >
+                <div
+                  class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-full mb-4"
+                >
+                  <i class="ri-government-line text-primary text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                  Government Schemes
+                </h3>
+                <p class="text-gray-600">
+                  Check eligibility and apply for various government welfare
+                  schemes.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="py-16">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">
+              What Users Say
+            </h2>
+            <div class="relative overflow-hidden" id="testimonialContainer">
+              <div
+                class="flex transition-transform duration-500"
+                id="testimonialSlider"
+              >
+                <div class="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
+                  <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex items-center mb-4">
+                      <div
+                        class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center"
+                      >
+                        <i class="ri-user-smile-line text-primary text-xl"></i>
+                      </div>
+                      <div class="ml-4">
+                        <h4 class="font-semibold text-gray-900">
+                          Alexander Thompson
+                        </h4>
+                        <p class="text-sm text-gray-600">Business Owner</p>
+                      </div>
+                    </div>
+                    <p class="text-gray-600 italic">
+                      "Aldovave has revolutionized how I handle my document
+                      updates. The process is incredibly smooth and
+                      time-saving."
+                    </p>
+                  </div>
+                </div>
+                <div class="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
+                  <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex items-center mb-4">
+                      <div
+                        class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center"
+                      >
+                        <i class="ri-user-smile-line text-primary text-xl"></i>
+                      </div>
+                      <div class="ml-4">
+                        <h4 class="font-semibold text-gray-900">
+                          Isabella Martinez
+                        </h4>
+                        <p class="text-sm text-gray-600">Student</p>
+                      </div>
+                    </div>
+                    <p class="text-gray-600 italic">
+                      "Managing my exam forms and documentation has never been
+                      easier. The platform is intuitive and user-friendly."
+                    </p>
+                  </div>
+                </div>
+                <div class="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
+                  <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex items-center mb-4">
+                      <div
+                        class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center"
+                      >
+                        <i class="ri-user-smile-line text-primary text-xl"></i>
+                      </div>
+                      <div class="ml-4">
+                        <h4 class="font-semibold text-gray-900">
+                          William Chen
+                        </h4>
+                        <p class="text-sm text-gray-600">IT Professional</p>
+                      </div>
+                    </div>
+                    <p class="text-gray-600 italic">
+                      "The passport renewal process through Aldovave was
+                      seamless. Highly recommend their services!"
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="flex justify-center mt-8 space-x-2">
+                <button
+                  class="w-3 h-3 rounded-full bg-primary"
+                  onclick="moveSlide(0)"
+                ></button>
+                <button
+                  class="w-3 h-3 rounded-full bg-gray-300"
+                  onclick="moveSlide(1)"
+                ></button>
+                <button
+                  class="w-3 h-3 rounded-full bg-gray-300"
+                  onclick="moveSlide(2)"
+                ></button>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="py-16 bg-white">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">
+              How It Works
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div
+                class="flex flex-col items-center text-center group"
+                data-aos="fade-up"
+                data-aos-delay="0"
+              >
+                <div
+                  class="w-20 h-20 flex items-center justify-center bg-primary/10 rounded-full mb-6 group-hover:scale-110 transition-transform"
+                >
+                  <i class="ri-user-add-line text-primary text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                  Create Account
+                </h3>
+                <p class="text-gray-600">
+                  Sign up in minutes with your basic details and verify your
+                  identity.
+                </p>
+              </div>
+              <div
+                class="flex flex-col items-center text-center group"
+                data-aos="fade-up"
+                data-aos-delay="100"
+              >
+                <div
+                  class="w-20 h-20 flex items-center justify-center bg-primary/10 rounded-full mb-6 group-hover:scale-110 transition-transform"
+                >
+                  <i class="ri-file-upload-line text-primary text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                  Upload Documents
+                </h3>
+                <p class="text-gray-600">
+                  Upload your documents securely and let our system verify them.
+                </p>
+              </div>
+              <div
+                class="flex flex-col items-center text-center group"
+                data-aos="fade-up"
+                data-aos-delay="200"
+              >
+                <div
+                  class="w-20 h-20 flex items-center justify-center bg-primary/10 rounded-full mb-6 group-hover:scale-110 transition-transform"
+                >
+                  <i class="ri-check-double-line text-primary text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-3">
+                  Get Updates
+                </h3>
+                <p class="text-gray-600">
+                  Receive real-time updates and track your document status
+                  easily.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="py-16 bg-gray-50">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center gap-12">
+              <div class="flex-1" data-aos="fade-right">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">
+                  Track Your Documents in Real-time
+                </h2>
+                <p class="text-lg text-gray-600 mb-8">
+                  Stay informed about your document status with our advanced
+                  tracking system. Get instant notifications and updates at
+                  every stage.
+                </p>
+                <ul class="space-y-4">
+                  <li class="flex items-center text-gray-600">
+                    <i class="ri-check-line text-primary mr-3"></i>
+                    Real-time status updates
+                  </li>
+                  <li class="flex items-center text-gray-600">
+                    <i class="ri-check-line text-primary mr-3"></i>
+                    Email & SMS notifications
+                  </li>
+                  <li class="flex items-center text-gray-600">
+                    <i class="ri-check-line text-primary mr-3"></i>
+                    Document history tracking
+                  </li>
+                </ul>
+              </div>
+              <div class="flex-1" data-aos="fade-left">
+                <img
+                  src="https://public.readdy.ai/ai/img_res/3d9cd775a728d7b09306d7ba7fe252d1.jpg"
+                  alt="Document Tracking"
+                  class="w-full rounded-xl shadow-lg"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="py-16 bg-white">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">
+              Latest Updates & News
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div
+                class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden"
+                data-aos="fade-up"
+                data-aos-delay="0"
+              >
+                <img
+                  src="https://public.readdy.ai/ai/img_res/a3c5868bc54acbee06e099b34bfd58ee.jpg"
+                  alt="News 1"
+                  class="w-full h-48 object-cover"
+                />
+                <div class="p-6">
+                  <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                    New Document Verification Process
+                  </h3>
+                  <p class="text-gray-600 mb-4">
+                    Learn about our enhanced document verification process
+                    ensuring better security.
+                  </p>
+                  <a href="#" class="text-primary hover:text-primary/80"
+                    >Read More →</a
+                  >
+                </div>
+              </div>
+              <div
+                class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden"
+                data-aos="fade-up"
+                data-aos-delay="100"
+              >
+                <img
+                  src="https://public.readdy.ai/ai/img_res/9509512808c165027d43d80455892277.jpg"
+                  alt="News 2"
+                  class="w-full h-48 object-cover"
+                />
+                <div class="p-6">
+                  <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                    Mobile App Launch
+                  </h3>
+                  <p class="text-gray-600 mb-4">
+                    Manage your documents on the go with our new mobile
+                    application.
+                  </p>
+                  <a href="#" class="text-primary hover:text-primary/80"
+                    >Read More →</a
+                  >
+                </div>
+              </div>
+              <div
+                class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden"
+                data-aos="fade-up"
+                data-aos-delay="200"
+              >
+                <img
+                  src="https://public.readdy.ai/ai/img_res/4c5ac9a1a38ff021d4eba6647f9ebb8c.jpg"
+                  alt="News 3"
+                  class="w-full h-48 object-cover"
+                />
+                <div class="p-6">
+                  <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                    Enhanced Security Features
+                  </h3>
+                  <p class="text-gray-600 mb-4">
+                    We've upgraded our security infrastructure to better protect
+                    your data.
+                  </p>
+                  <a href="#" class="text-primary hover:text-primary/80"
+                    >Read More →</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="py-16 bg-primary/5">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto" data-aos="fade-up">
+              <h2 class="text-3xl font-bold text-gray-900 mb-6">
+                Ready to Get Started?
+              </h2>
+              <p class="text-lg text-gray-600 mb-8">
+                Join thousands of satisfied users who trust Aldovave for their
+                document management needs.
+              </p>
+              <button
+                class="bg-primary text-white px-8 py-3 !rounded-button text-lg hover:bg-primary/90 whitespace-nowrap"
+              >
+                Create Free Account
+              </button>
+            </div>
+          </div>
+        </section>
+        <footer class="bg-gray-50 border-t border-gray-100">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div>
+                <a href="#" class="text-2xl font-['Pacifico'] text-primary"
+                  >logo</a
+                >
+                <p class="mt-4 text-gray-600">
+                  Simplifying document management for a better tomorrow.
+                </p>
+                <div class="flex space-x-4 mt-6">
+                  <a
+                    href="#"
+                    class="w-10 h-10 flex items-center justify-center rounded-full bg-primary/10 hover:bg-primary/20"
+                  >
+                    <i class="ri-twitter-x-line text-primary"></i>
+                  </a>
+                  <a
+                    href="#"
+                    class="w-10 h-10 flex items-center justify-center rounded-full bg-primary/10 hover:bg-primary/20"
+                  >
+                    <i class="ri-linkedin-line text-primary"></i>
+                  </a>
+                  <a
+                    href="#"
+                    class="w-10 h-10 flex items-center justify-center rounded-full bg-primary/10 hover:bg-primary/20"
+                  >
+                    <i class="ri-facebook-line text-primary"></i>
+                  </a>
+                </div>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                  Quick Links
+                </h3>
+                <ul class="space-y-2">
+                  <li>
+                    <a href="#" class="text-gray-600 hover:text-primary"
+                      >About Us</a
+                    >
+                  </li>
+                  <li>
+                    <a href="#" class="text-gray-600 hover:text-primary"
+                      >Services</a
+                    >
+                  </li>
+                  <li>
+                    <a href="#" class="text-gray-600 hover:text-primary"
+                      >Contact</a
+                    >
+                  </li>
+                  <li>
+                    <a href="#" class="text-gray-600 hover:text-primary"
+                      >Privacy Policy</a
+                    >
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                  Contact Us
+                </h3>
+                <ul class="space-y-2">
+                  <li class="flex items-center text-gray-600">
+                    <i class="ri-map-pin-line mr-2"></i>
+                    123 Business Avenue, Tech City
+                  </li>
+                  <li class="flex items-center text-gray-600">
+                    <i class="ri-phone-line mr-2"></i>
+                    +1 (555) 123-4567
+                  </li>
+                  <li class="flex items-center text-gray-600">
+                    <i class="ri-mail-line mr-2"></i>
+                    support@aldovave.com
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div
+              class="mt-12 pt-8 border-t border-gray-200 text-center text-gray-600"
+            >
+              <p>&copy; 2025 Aldovave. All rights reserved.</p>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </main>
+
+    <script>
+      const menuToggle = document.getElementById("menu-toggle");
+      const sidebar = document.querySelector(".sidebar");
+      const content = document.getElementById("content");
+      const sidebarLinks = document.querySelectorAll(".sidebar-link");
+
+      // Menu toggle for mobile
+      menuToggle.addEventListener("click", () => {
+        sidebar.classList.toggle("open");
+      });
+
+      // Close sidebar when clicking outside on mobile
+      document.addEventListener("click", (e) => {
+        if (
+          !sidebar.contains(e.target) &&
+          !menuToggle.contains(e.target) &&
+          sidebar.classList.contains("open")
+        ) {
+          sidebar.classList.remove("open");
+        }
+      });
+
+      // Content sections
+      const sections = {
+        dashboard: `
+          <section class="pt-24 pb-16 relative overflow-hidden">
+<div class="absolute inset-0 bg-[url('https://public.readdy.ai/ai/img_res/c8d220f4da933dfea0b57a2ddb59cf2c.jpg')] bg-cover bg-center opacity-10"></div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+<div class="flex flex-col md:flex-row items-center justify-between gap-12">
+<div class="flex-1 text-center md:text-left">
+<h1 class="text-5xl font-bold text-gray-900 mb-6">Welcome to Aldovave</h1>
+<p class="text-xl text-gray-600 mb-8">Simplify your document updates with our intelligent platform. Manage Aadhaar, passport, exam forms, and more - all in one place.</p>
+<div class="flex flex-wrap gap-4 justify-center md:justify-start">
+<button class="bg-primary text-white px-8 py-3 !rounded-button text-lg hover:bg-primary/90 whitespace-nowrap">Get Started</button>
+<button class="border border-gray-300 text-gray-700 px-8 py-3 !rounded-button text-lg hover:bg-gray-50 whitespace-nowrap">Learn More</button>
+</div>
+</div>
+<div class="flex-1">
+<img src="https://public.readdy.ai/ai/img_res/2ab7edbf376e1a5b5cff0e0cdf211ec2.jpg" alt="Document Management" class="w-full h-auto rounded-2xl shadow-2xl">
+</div>
+</div>
+</div>
+</section>
+<section class="py-16 bg-gray-50">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<h2 class="text-3xl font-bold text-center text-gray-900 mb-12">Our Services</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+<div class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-full mb-4">
+<i class="ri-id-card-line text-primary text-2xl"></i>
+</div>
+<h3 class="text-xl font-semibold text-gray-900 mb-2">Aadhaar Update</h3>
+<p class="text-gray-600">Update your Aadhaar card details quickly and securely through our verified platform.</p>
+</div>
+<div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+<div class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-full mb-4">
+<i class="ri-passport-line text-primary text-2xl"></i>
+</div>
+<h3 class="text-xl font-semibold text-gray-900 mb-2">Passport Renewal</h3>
+<p class="text-gray-600">Effortlessly renew your passport with our streamlined digital process.</p>
+</div>
+<div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+<div class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-full mb-4">
+<i class="ri-file-list-3-line text-primary text-2xl"></i>
+</div>
+<h3 class="text-xl font-semibold text-gray-900 mb-2">Exam Forms</h3>
+<p class="text-gray-600">Submit major examination forms easily with our guided application process.</p>
+</div>
+<div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+<div class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-full mb-4">
+<i class="ri-visa-line text-primary text-2xl"></i>
+</div>
+<h3 class="text-xl font-semibold text-gray-900 mb-2">Visa Application</h3>
+<p class="text-gray-600">Track and manage your visa applications with real-time status updates.</p>
+</div>
+<div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+<div class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-full mb-4">
+<i class="ri-government-line text-primary text-2xl"></i>
+</div>
+<h3 class="text-xl font-semibold text-gray-900 mb-2">Government Schemes</h3>
+<p class="text-gray-600">Check eligibility and apply for various government welfare schemes.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="py-16">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<h2 class="text-3xl font-bold text-center text-gray-900 mb-12">What Users Say</h2>
+<div class="relative overflow-hidden" id="testimonialContainer">
+<div class="flex transition-transform duration-500" id="testimonialSlider">
+<div class="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
+<div class="bg-white p-6 rounded-xl shadow-sm">
+<div class="flex items-center mb-4">
+<div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+<i class="ri-user-smile-line text-primary text-xl"></i>
+</div>
+<div class="ml-4">
+<h4 class="font-semibold text-gray-900">Alexander Thompson</h4>
+<p class="text-sm text-gray-600">Business Owner</p>
+</div>
+</div>
+<p class="text-gray-600 italic">"Aldovave has revolutionized how I handle my document updates. The process is incredibly smooth and time-saving."</p>
+</div>
+</div>
+<div class="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
+<div class="bg-white p-6 rounded-xl shadow-sm">
+<div class="flex items-center mb-4">
+<div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+<i class="ri-user-smile-line text-primary text-xl"></i>
+</div>
+<div class="ml-4">
+<h4 class="font-semibold text-gray-900">Isabella Martinez</h4>
+<p class="text-sm text-gray-600">Student</p>
+</div>
+</div>
+<p class="text-gray-600 italic">"Managing my exam forms and documentation has never been easier. The platform is intuitive and user-friendly."</p>
+</div>
+</div>
+<div class="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
+<div class="bg-white p-6 rounded-xl shadow-sm">
+<div class="flex items-center mb-4">
+<div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+<i class="ri-user-smile-line text-primary text-xl"></i>
+</div>
+<div class="ml-4">
+<h4 class="font-semibold text-gray-900">William Chen</h4>
+<p class="text-sm text-gray-600">IT Professional</p>
+</div>
+</div>
+<p class="text-gray-600 italic">"The passport renewal process through Aldovave was seamless. Highly recommend their services!"</p>
+</div>
+</div>
+</div>
+<div class="flex justify-center mt-8 space-x-2">
+<button class="w-3 h-3 rounded-full bg-primary" onclick="moveSlide(0)"></button>
+<button class="w-3 h-3 rounded-full bg-gray-300" onclick="moveSlide(1)"></button>
+<button class="w-3 h-3 rounded-full bg-gray-300" onclick="moveSlide(2)"></button>
+</div>
+</div>
+</div>
+</section>
+<section class="py-16 bg-white">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<h2 class="text-3xl font-bold text-center text-gray-900 mb-12">How It Works</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="flex flex-col items-center text-center group" data-aos="fade-up" data-aos-delay="0">
+<div class="w-20 h-20 flex items-center justify-center bg-primary/10 rounded-full mb-6 group-hover:scale-110 transition-transform">
+<i class="ri-user-add-line text-primary text-3xl"></i>
+</div>
+<h3 class="text-xl font-semibold text-gray-900 mb-3">Create Account</h3>
+<p class="text-gray-600">Sign up in minutes with your basic details and verify your identity.</p>
+</div>
+<div class="flex flex-col items-center text-center group" data-aos="fade-up" data-aos-delay="100">
+<div class="w-20 h-20 flex items-center justify-center bg-primary/10 rounded-full mb-6 group-hover:scale-110 transition-transform">
+<i class="ri-file-upload-line text-primary text-3xl"></i>
+</div>
+<h3 class="text-xl font-semibold text-gray-900 mb-3">Upload Documents</h3>
+<p class="text-gray-600">Upload your documents securely and let our system verify them.</p>
+</div>
+<div class="flex flex-col items-center text-center group" data-aos="fade-up" data-aos-delay="200">
+<div class="w-20 h-20 flex items-center justify-center bg-primary/10 rounded-full mb-6 group-hover:scale-110 transition-transform">
+<i class="ri-check-double-line text-primary text-3xl"></i>
+</div>
+<h3 class="text-xl font-semibold text-gray-900 mb-3">Get Updates</h3>
+<p class="text-gray-600">Receive real-time updates and track your document status easily.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="py-16 bg-gray-50">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex flex-col md:flex-row items-center gap-12">
+<div class="flex-1" data-aos="fade-right">
+<h2 class="text-3xl font-bold text-gray-900 mb-6">Track Your Documents in Real-time</h2>
+<p class="text-lg text-gray-600 mb-8">Stay informed about your document status with our advanced tracking system. Get instant notifications and updates at every stage.</p>
+<ul class="space-y-4">
+<li class="flex items-center text-gray-600">
+<i class="ri-check-line text-primary mr-3"></i>
+Real-time status updates
+</li>
+<li class="flex items-center text-gray-600">
+<i class="ri-check-line text-primary mr-3"></i>
+Email & SMS notifications
+</li>
+<li class="flex items-center text-gray-600">
+<i class="ri-check-line text-primary mr-3"></i>
+Document history tracking
+</li>
+</ul>
+</div>
+<div class="flex-1" data-aos="fade-left">
+<img src="https://public.readdy.ai/ai/img_res/3d9cd775a728d7b09306d7ba7fe252d1.jpg" alt="Document Tracking" class="w-full rounded-xl shadow-lg">
+</div>
+</div>
+</div>
+</section>
+<section class="py-16 bg-white">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<h2 class="text-3xl font-bold text-center text-gray-900 mb-12">Latest Updates & News</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden" data-aos="fade-up" data-aos-delay="0">
+<img src="https://public.readdy.ai/ai/img_res/a3c5868bc54acbee06e099b34bfd58ee.jpg" alt="News 1" class="w-full h-48 object-cover">
+<div class="p-6">
+<h3 class="text-xl font-semibold text-gray-900 mb-2">New Document Verification Process</h3>
+<p class="text-gray-600 mb-4">Learn about our enhanced document verification process ensuring better security.</p>
+<a href="#" class="text-primary hover:text-primary/80">Read More →</a>
+</div>
+</div>
+<div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden" data-aos="fade-up" data-aos-delay="100">
+<img src="https://public.readdy.ai/ai/img_res/9509512808c165027d43d80455892277.jpg" alt="News 2" class="w-full h-48 object-cover">
+<div class="p-6">
+<h3 class="text-xl font-semibold text-gray-900 mb-2">Mobile App Launch</h3>
+<p class="text-gray-600 mb-4">Manage your documents on the go with our new mobile application.</p>
+<a href="#" class="text-primary hover:text-primary/80">Read More →</a>
+</div>
+</div>
+<div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden" data-aos="fade-up" data-aos-delay="200">
+<img src="https://public.readdy.ai/ai/img_res/4c5ac9a1a38ff021d4eba6647f9ebb8c.jpg" alt="News 3" class="w-full h-48 object-cover">
+<div class="p-6">
+<h3 class="text-xl font-semibold text-gray-900 mb-2">Enhanced Security Features</h3>
+<p class="text-gray-600 mb-4">We've upgraded our security infrastructure to better protect your data.</p>
+<a href="#" class="text-primary hover:text-primary/80">Read More →</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-16 bg-primary/5">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center max-w-3xl mx-auto" data-aos="fade-up">
+<h2 class="text-3xl font-bold text-gray-900 mb-6">Ready to Get Started?</h2>
+<p class="text-lg text-gray-600 mb-8">Join thousands of satisfied users who trust Aldovave for their document management needs.</p>
+<button class="bg-primary text-white px-8 py-3 !rounded-button text-lg hover:bg-primary/90 whitespace-nowrap">Create Free Account</button>
+</div>
+</div>
+</section>
+<footer class="bg-gray-50 border-t border-gray-100">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div>
+<a href="#" class="text-2xl font-['Pacifico'] text-primary">logo</a>
+<p class="mt-4 text-gray-600">Simplifying document management for a better tomorrow.</p>
+<div class="flex space-x-4 mt-6">
+<a href="#" class="w-10 h-10 flex items-center justify-center rounded-full bg-primary/10 hover:bg-primary/20">
+<i class="ri-twitter-x-line text-primary"></i>
+</a>
+<a href="#" class="w-10 h-10 flex items-center justify-center rounded-full bg-primary/10 hover:bg-primary/20">
+<i class="ri-linkedin-line text-primary"></i>
+</a>
+<a href="#" class="w-10 h-10 flex items-center justify-center rounded-full bg-primary/10 hover:bg-primary/20">
+<i class="ri-facebook-line text-primary"></i>
+</a>
+</div>
+</div>
+<div>
+<h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Links</h3>
+<ul class="space-y-2">
+<li><a href="#" class="text-gray-600 hover:text-primary">About Us</a></li>
+<li><a href="#" class="text-gray-600 hover:text-primary">Services</a></li>
+<li><a href="#" class="text-gray-600 hover:text-primary">Contact</a></li>
+<li><a href="#" class="text-gray-600 hover:text-primary">Privacy Policy</a></li>
+</ul>
+</div>
+<div>
+<h3 class="text-lg font-semibold text-gray-900 mb-4">Contact Us</h3>
+<ul class="space-y-2">
+<li class="flex items-center text-gray-600">
+<i class="ri-map-pin-line mr-2"></i>
+123 Business Avenue, Tech City
+</li>
+<li class="flex items-center text-gray-600">
+<i class="ri-phone-line mr-2"></i>
++1 (555) 123-4567
+</li>
+<li class="flex items-center text-gray-600">
+<i class="ri-mail-line mr-2"></i>
+support@aldovave.com
+</li>
+</ul>
+</div>
+</div>
+<div class="mt-12 pt-8 border-t border-gray-200 text-center text-gray-600">
+<p>&copy; 2025 Aldovave. All rights reserved.</p>
+</div>
+</div>
+</footer>
+        `,
+        aadhaar: `
+         <div class="mb-8">
+            <h1 class="text-2xl sm:text-3xl font-semibold text-gray-900 mb-2">Aadhaar Update Service</h1>
+            <p class="text-gray-600 text-sm sm:text-base">Renew or update your Aadhaar with our simple online process.</p>
+          </div>
+          <div class="dropdown bg-white rounded-lg shadow-sm hover:shadow transition-shadow">
+            <button class="w-full px-6 py-4 flex items-center justify-between text-left !rounded-button">
+              <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-full">
+                  <i class="ri-link text-primary text-xl"></i>
+                </div>
+                <span class="font-semibold text-gray-900">Aadhar Enrollment</span>
+              </div>
+              <i class="ri-arrow-down-s-line dropdown-arrow text-gray-400"></i>
+            </button>
+            <div class="dropdown-content px-6 pb-4">
+              <div class="pt-4 border-t grid gap-4">
+                <div class="nested-dropdown">
+                  <button class="flex items-center justify-between text-left w-full p-3 rounded-button hover:bg-gray-50">
+                    <div class="flex items-center space-x-3">
+                      <i class="ri-bank-card-2-line text-gray-600"></i>
+                      <span>New Enrollment</span>
+                    </div>
+                    <i class="ri-arrow-right-s-line text-gray-400"></i>
+                  </button>
+                  <div class="nested-content pl-8 py-2">
+                    <div class="space-y-2">
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-check-line text-gray-600"></i>
+                        <span>Verify PAN Status</span>
+                      </button>
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-file-list-line text-gray-600"></i>
+                        <span>Link New PAN</span>
+                      </button>
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-history-line text-gray-600"></i>
+                        <span>View Linking History</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+               
+                <!-- Add other nested dropdowns as needed -->
+              </div>
+            </div>
+          </div>
+          <div class="dropdown bg-white rounded-lg shadow-sm hover:shadow transition-shadow">
+            <button class="w-full px-6 py-4 flex items-center justify-between text-left !rounded-button">
+              <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-full">
+                  <i class="ri-link text-primary text-xl"></i>
+                </div>
+                <span class="font-semibold text-gray-900">Aadhaar Update Service</span>
+              </div>
+              <i class="ri-arrow-down-s-line dropdown-arrow text-gray-400"></i>
+            </button>
+            <div class="dropdown-content px-6 pb-4">
+              <div class="pt-4 border-t grid gap-4">
+                <div class="nested-dropdown">
+                  <button class="flex items-center justify-between text-left w-full p-3 rounded-button hover:bg-gray-50">
+                    <div class="flex items-center space-x-3">
+                      <i class="ri-bank-card-2-line text-gray-600"></i>
+                      <span>Biometric Update</span>
+                    </div>
+                    <i class="ri-arrow-right-s-line text-gray-400"></i>
+                  </button>
+                  <div class="nested-content pl-8 py-2">
+                    <div class="space-y-2">
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-check-line text-gray-600"></i>
+                        <span>Verify PAN Status</span>
+                      </button>
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-file-list-line text-gray-600"></i>
+                        <span>Link New PAN</span>
+                      </button>
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-history-line text-gray-600"></i>
+                        <span>View Linking History</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="nested-dropdown">
+                  <button class="flex items-center justify-between text-left w-full p-3 rounded-button hover:bg-gray-50">
+                    <div class="flex items-center space-x-3">
+                      <i class="ri-smartphone-line text-gray-600"></i>
+                      <span>Address Update</span>
+                    </div>
+                    <i class="ri-arrow-right-s-line text-gray-400"></i>
+                  </button>
+                  <div class="nested-content pl-8 py-2">
+                    <div class="space-y-2">
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-smartphone-line text-gray-600"></i>
+                        <span>Address Update</span>
+                      </button>
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-exchange-line text-gray-600"></i>
+                        <span>Update Mobile Number</span>
+                      </button>
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-delete-bin-line text-gray-600"></i>
+                        <span>Delink Mobile</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="nested-dropdown">
+                  <button class="flex items-center justify-between text-left w-full p-3 rounded-button hover:bg-gray-50">
+                    <div class="flex items-center space-x-3">
+                      <i class="ri-smartphone-line text-gray-600"></i>
+                      <span>Mobile Number Update</span>
+                    </div>
+                    <i class="ri-arrow-right-s-line text-gray-400"></i>
+                  </button>
+                  <div class="nested-content pl-8 py-2">
+                    <div class="space-y-2">
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-smartphone-line text-gray-600"></i>
+                        <span>Address Update</span>
+                      </button>
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-exchange-line text-gray-600"></i>
+                        <span>Update Mobile Number</span>
+                      </button>
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-delete-bin-line text-gray-600"></i>
+                        <span>Delink Mobile</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="nested-dropdown">
+                  <button class="flex items-center justify-between text-left w-full p-3 rounded-button hover:bg-gray-50">
+                    <div class="flex items-center space-x-3">
+                      <i class="ri-smartphone-line text-gray-600"></i>
+                      <span>Name Update</span>
+                    </div>
+                    <i class="ri-arrow-right-s-line text-gray-400"></i>
+                  </button>
+                  <div class="nested-content pl-8 py-2">
+                    <div class="space-y-2">
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-smartphone-line text-gray-600"></i>
+                        <span>Address Update</span>
+                      </button>
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-exchange-line text-gray-600"></i>
+                        <span>Update Mobile Number</span>
+                      </button>
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-delete-bin-line text-gray-600"></i>
+                        <span>Delink Mobile</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="nested-dropdown">
+                  <button class="flex items-center justify-between text-left w-full p-3 rounded-button hover:bg-gray-50">
+                    <div class="flex items-center space-x-3">
+                      <i class="ri-smartphone-line text-gray-600"></i>
+                      <span>Date Of Birth Update</span>
+                    </div>
+                    <i class="ri-arrow-right-s-line text-gray-400"></i>
+                  </button>
+                  <div class="nested-content pl-8 py-2">
+                    <div class="space-y-2">
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-smartphone-line text-gray-600"></i>
+                        <span>Address Update</span>
+                      </button>
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-exchange-line text-gray-600"></i>
+                        <span>Update Mobile Number</span>
+                      </button>
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-delete-bin-line text-gray-600"></i>
+                        <span>Delink Mobile</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="nested-dropdown">
+                  <button class="flex items-center justify-between text-left w-full p-3 rounded-button hover:bg-gray-50">
+                    <div class="flex items-center space-x-3">
+                      <i class="ri-smartphone-line text-gray-600"></i>
+                      <span>Gender Update</span>
+                    </div>
+                    <i class="ri-arrow-right-s-line text-gray-400"></i>
+                  </button>
+                  <div class="nested-content pl-8 py-2">
+                    <div class="space-y-2">
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-smartphone-line text-gray-600"></i>
+                        <span>Address Update</span>
+                      </button>
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-exchange-line text-gray-600"></i>
+                        <span>Update Mobile Number</span>
+                      </button>
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-delete-bin-line text-gray-600"></i>
+                        <span>Delink Mobile</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <!-- Add other nested dropdowns as needed -->
+              </div>
+            </div>
+          </div>
+          <div class="dropdown bg-white rounded-lg shadow-sm hover:shadow transition-shadow">
+            <button class="w-full px-6 py-4 flex items-center justify-between text-left !rounded-button">
+              <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-full">
+                  <i class="ri-link text-primary text-xl"></i>
+                </div>
+                <span class="font-semibold text-gray-900">Aadhaar Download and Print</span>
+              </div>
+              <i class="ri-arrow-down-s-line dropdown-arrow text-gray-400"></i>
+            </button>
+            <div class="dropdown-content px-6 pb-4">
+              <div class="pt-4 border-t grid gap-4">
+                <div class="nested-dropdown">
+                  <button class="flex items-center justify-between text-left w-full p-3 rounded-button hover:bg-gray-50">
+                    <div class="flex items-center space-x-3">
+                      <i class="ri-bank-card-2-line text-gray-600"></i>
+                      <span>Download e-aadhaar</span>
+                    </div>
+                    <i class="ri-arrow-right-s-line text-gray-400"></i>
+                  </button>
+                  <div class="nested-content pl-8 py-2">
+                    <div class="space-y-2">
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-check-line text-gray-600"></i>
+                        <span>Verify PAN Status</span>
+                      </button>
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-file-list-line text-gray-600"></i>
+                        <span>Link New PAN</span>
+                      </button>
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-history-line text-gray-600"></i>
+                        <span>View Linking History</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="nested-dropdown">
+                  <button class="flex items-center justify-between text-left w-full p-3 rounded-button hover:bg-gray-50">
+                    <div class="flex items-center space-x-3">
+                      <i class="ri-smartphone-line text-gray-600"></i>
+                      <span>Order Aadhaar PVC Card</span>
+                    </div>
+                    <i class="ri-arrow-right-s-line text-gray-400"></i>
+                  </button>
+                  <div class="nested-content pl-8 py-2">
+                    <div class="space-y-2">
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-smartphone-line text-gray-600"></i>
+                        <span>Link New Mobile</span>
+                      </button>
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-exchange-line text-gray-600"></i>
+                        <span>Update Mobile Number</span>
+                      </button>
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-delete-bin-line text-gray-600"></i>
+                        <span>Delink Mobile</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <!-- Add other nested dropdowns as needed -->
+              </div>
+            </div>
+          </div>
+          <div class="dropdown bg-white rounded-lg shadow-sm hover:shadow transition-shadow">
+            <button class="w-full px-6 py-4 flex items-center justify-between text-left !rounded-button">
+              <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-full">
+                  <i class="ri-link text-primary text-xl"></i>
+                </div>
+                <span class="font-semibold text-gray-900">Aadhaar Authentication Services</span>
+              </div>
+              <i class="ri-arrow-down-s-line dropdown-arrow text-gray-400"></i>
+            </button>
+            <div class="dropdown-content px-6 pb-4">
+              <div class="pt-4 border-t grid gap-4">
+                <div class="nested-dropdown">
+                  <button class="flex items-center justify-between text-left w-full p-3 rounded-button hover:bg-gray-50">
+                    <div class="flex items-center space-x-3">
+                      <i class="ri-bank-card-2-line text-gray-600"></i>
+                      <span>Verify Aadhaar Number</span>
+                    </div>
+                    <i class="ri-arrow-right-s-line text-gray-400"></i>
+                  </button>
+                  <div class="nested-content pl-8 py-2">
+                    <div class="space-y-2">
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-check-line text-gray-600"></i>
+                        <span>Verify PAN Status</span>
+                      </button>
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-file-list-line text-gray-600"></i>
+                        <span>Link New PAN</span>
+                      </button>
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-history-line text-gray-600"></i>
+                        <span>View Linking History</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+               
+              </div>
+            </div>
+          </div>
+
+          <div class="dropdown bg-white rounded-lg shadow-sm hover:shadow transition-shadow">
+            <button class="w-full px-6 py-4 flex items-center justify-between text-left !rounded-button">
+              <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-full">
+                  <i class="ri-link text-primary text-xl"></i>
+                </div>
+                <span class="font-semibold text-gray-900">Aadhaar Linking Service</span>
+              </div>
+              <i class="ri-arrow-down-s-line dropdown-arrow text-gray-400"></i>
+            </button>
+            <div class="dropdown-content px-6 pb-4">
+              <div class="pt-4 border-t grid gap-4">
+                <div class="nested-dropdown">
+                  <button class="flex items-center justify-between text-left w-full p-3 rounded-button hover:bg-gray-50">
+                    <div class="flex items-center space-x-3">
+                      <i class="ri-bank-card-2-line text-gray-600"></i>
+                      <span>Link Aadhaar with PAN</span>
+                    </div>
+                    <i class="ri-arrow-right-s-line text-gray-400"></i>
+                  </button>
+                  <div class="nested-content pl-8 py-2">
+                    <div class="space-y-2">
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-check-line text-gray-600"></i>
+                        <span>Verify PAN Status</span>
+                      </button>
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-file-list-line text-gray-600"></i>
+                        <span>Link New PAN</span>
+                      </button>
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-history-line text-gray-600"></i>
+                        <span>View Linking History</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="nested-dropdown">
+                  <button class="flex items-center justify-between text-left w-full p-3 rounded-button hover:bg-gray-50">
+                    <div class="flex items-center space-x-3">
+                      <i class="ri-smartphone-line text-gray-600"></i>
+                      <span>Link Aadhaar with Mobile Number</span>
+                    </div>
+                    <i class="ri-arrow-right-s-line text-gray-400"></i>
+                  </button>
+                  <div class="nested-content pl-8 py-2">
+                    <div class="space-y-2">
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-smartphone-line text-gray-600"></i>
+                        <span>Link New Mobile</span>
+                      </button>
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-exchange-line text-gray-600"></i>
+                        <span>Update Mobile Number</span>
+                      </button>
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-delete-bin-line text-gray-600"></i>
+                        <span>Delink Mobile</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <!-- Add other nested dropdowns as needed -->
+              </div>
+            </div>
+          </div>
+
+          <div class="dropdown bg-white rounded-lg shadow-sm hover:shadow transition-shadow">
+            <button class="w-full px-6 py-4 flex items-center justify-between text-left !rounded-button">
+              <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-full">
+                  <i class="ri-link text-primary text-xl"></i>
+                </div>
+                <span class="font-semibold text-gray-900">Miscellaneous Aadhaar Service</span>
+              </div>
+              <i class="ri-arrow-down-s-line dropdown-arrow text-gray-400"></i>
+            </button>
+            <div class="dropdown-content px-6 pb-4">
+              <div class="pt-4 border-t grid gap-4">
+                <div class="nested-dropdown">
+                  <button class="flex items-center justify-between text-left w-full p-3 rounded-button hover:bg-gray-50">
+                    <div class="flex items-center space-x-3">
+                      <i class="ri-bank-card-2-line text-gray-600"></i>
+                      <span>Virtual ID Generation</span>
+                    </div>
+                    <i class="ri-arrow-right-s-line text-gray-400"></i>
+                  </button>
+                  <div class="nested-content pl-8 py-2">
+                    <div class="space-y-2">
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-check-line text-gray-600"></i>
+                        <span>Verify PAN Status</span>
+                      </button>
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-file-list-line text-gray-600"></i>
+                        <span>Link New PAN</span>
+                      </button>
+                      <button class="flex items-center space-x-3 text-left w-full p-2 rounded-button hover:bg-gray-50">
+                        <i class="ri-history-line text-gray-600"></i>
+                        <span>View Linking History</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+               
+              </div>
+            </div>
+          </div>
+        `,
+        passport: `
+          <div class="mb-8">
+            <h1 class="text-2xl sm:text-3xl font-semibold text-gray-900 mb-2">Passport Update Services</h1>
+            <p class="text-gray-600 text-sm sm:text-base">Renew or update your passport with our simple online process.</p>
+          </div>
+          <div class="bg-white p-4 sm:p-6 rounded-lg shadow-sm">
+            <p class="text-gray-600 mb-4">Start your passport update process here.</p>
+            <button class="bg-primary text-white px-4 py-2 rounded-button hover:bg-blue-700 transition-colors">Proceed</button>
+          </div>
+        `,
+        exam: `
+                <div class="mb-8">
+                    <h1 class="text-2xl sm:text-3xl font-semibold text-gray-900 mb-2">Exam Form Submission</h1>
+                    <p class="text-gray-600 text-sm sm:text-base">Submit your exam forms securely.</p>
+                </div>
+                <div class="bg-white p-4 sm:p-6 rounded-lg shadow-sm">
+                    <p class="text-gray-600 mb-4">Complete the steps below to submit your exam form.</p>
+                    <button class="bg-primary text-white px-4 py-2 rounded-button hover:bg-blue-700 transition-colors">Proceed</button>
+                </div>
+            `,
+        visa: `
+                <div class="mb-8">
+                    <h1 class="text-2xl sm:text-3xl font-semibold text-gray-900 mb-2">Visa Application Services</h1>
+                    <p class="text-gray-600 text-sm sm:text-base">Apply for your visa with ease.</p>
+                </div>
+                <div class="bg-white p-4 sm:p-6 rounded-lg shadow-sm">
+                    <p class="text-gray-600 mb-4">Start your visa application process here.</p>
+                    <button class="bg-primary text-white px-4 py-2 rounded-button hover:bg-blue-700 transition-colors">Proceed</button>
+                </div>
+            `,
+        government: `
+                <div class="mb-8">
+                    <h1 class="text-2xl sm:text-3xl font-semibold text-gray-900 mb-2">Government Schemes and Benefits</h1>
+                    <p class="text-gray-600 text-sm sm:text-base">Explore and apply for government schemes.</p>
+                </div>
+                <div class="bg-white p-4 sm:p-6 rounded-lg shadow-sm">
+                    <p class="text-gray-600 mb-4">View available schemes and apply now.</p>
+                    <button class="bg-primary text-white px-4 py-2 rounded-button hover:bg-blue-700 transition-colors">Proceed</button>
+                </div>
+            `,
+        driving: `
+                <div class="mb-8">
+                    <h1 class="text-2xl sm:text-3xl font-semibold text-gray-900 mb-2">Driving License Services</h1>
+                    <p class="text-gray-600 text-sm sm:text-base">Apply or renew your driving license.</p>
+                </div>
+                <div class="bg-white p-4 sm:p-6 rounded-lg shadow-sm">
+                    <p class="text-gray-600 mb-4">Start your driving license process here.</p>
+                    <button class="bg-primary text-white px-4 py-2 rounded-button hover:bg-blue-700 transition-colors">Proceed</button>
+                </div>
+            `,
+        pancard: `
+                <div class="mb-8">
+                    <h1 class="text-2xl sm:text-3xl font-semibold text-gray-900 mb-2">PAN Card Services</h1>
+                    <p class="text-gray-600 text-sm sm:text-base">Apply or update your PAN card.</p>
+                </div>
+                <div class="bg-white p-4 sm:p-6 rounded-lg shadow-sm">
+                    <p class="text-gray-600 mb-4">Initiate your PAN card service request.</p>
+                    <button class="bg-primary text-white px-4 py-2 rounded-button hover:bg-blue-700 transition-colors">Proceed</button>
+                </div>
+            `,
+        voter: `
+                <div class="mb-8">
+                    <h1 class="text-2xl sm:text-3xl font-semibold text-gray-900 mb-2">Voter ID Update Services</h1>
+                    <p class="text-gray-600 text-sm sm:text-base">Update your Voter ID details securely.</p>
+                </div>
+                <div class="bg-white p-4 sm:p-6 rounded-lg shadow-sm">
+                    <p class="text-gray-600 mb-4">Update your Voter ID information here.</p>
+                    <button class="bg-primary text-white px-4 py-2 rounded-button hover:bg-blue-700 transition-colors">Proceed</button>
+                </div>
+            `,
+        income: `
+                <div class="mb-8">
+                    <h1 class="text-2xl sm:text-3xl font-semibold text-gray-900 mb-2">Income Tax Services</h1>
+                    <p class="text-gray-600 text-sm sm:text-base">File or manage your income tax returns.</p>
+                </div>
+                <div class="bg-white p-4 sm:p-6 rounded-lg shadow-sm">
+                    <p class="text-gray-600 mb-4">Access income tax services here.</p>
+                    <button class="bg-primary text-white px-4 py-2 rounded-button hover:bg-blue-700 transition-colors">Proceed</button>
+                </div>
+            `,
+        birth: `
+                <div class="mb-8">
+                    <h1 class="text-2xl sm:text-3xl font-semibold text-gray-900 mb-2">Birth and Death Certificate Services</h1>
+                    <p class="text-gray-600 text-sm sm:text-base">Apply for birth or death certificates.</p>
+                </div>
+                <div class="bg-white p-4 sm:p-6 rounded-lg shadow-sm">
+                    <p class="text-gray-600 mb-4">Request certificates easily.</p>
+                    <button class="bg-primary text-white px-4 py-2 rounded-button hover:bg-blue-700 transition-colors">Proceed</button>
+                </div>
+            `,
+        bill: `
+                <div class="mb-8">
+                    <h1 class="text-2xl sm:text-3xl font-semibold text-gray-900 mb-2">Utility Bill Payments</h1>
+                    <p class="text-gray-600 text-sm sm:text-base">Pay your utility bills online.</p>
+                </div>
+                <div class="bg-white p-4 sm:p-6 rounded-lg shadow-sm">
+                    <p class="text-gray-600 mb-4">Make payments quickly and securely.</p>
+                    <button class="bg-primary text-white px-4 py-2 rounded-button hover:bg-blue-700 transition-colors">Proceed</button>
+                </div>
+            `,
+        health: `
+                <div class="mb-8">
+                    <h1 class="text-2xl sm:text-3xl font-semibold text-gray-900 mb-2">Health Insurance and Medical Card Update</h1>
+                    <p class="text-gray-600 text-sm sm:text-base">Manage your health insurance and medical cards.</p>
+                </div>
+                <div class="bg-white p-4 sm:p-6 rounded-lg shadow-sm">
+                    <p class="text-gray-600 mb-4">Update your health-related documents here.</p>
+                    <button class="bg-primary text-white px-4 py-2 rounded-button hover:bg-blue-700 transition-colors">Proceed</button>
+                </div>
+            `,
+        // Add other sections as needed
+      };
+
+      // Handle sidebar link clicks
+      sidebarLinks.forEach((link) => {
+        link.addEventListener("click", (e) => {
+          e.preventDefault();
+          const section = link.getAttribute("data-section");
+          sidebarLinks.forEach((l) =>
+            l.classList.remove("text-primary", "bg-blue-50")
+          );
+          link.classList.add("text-primary", "bg-blue-50");
+          content.innerHTML =
+            sections[section] || "<p>Content not available.</p>";
+          if (sidebar.classList.contains("open")) {
+            sidebar.classList.remove("open");
+          }
+          attachDropdownListeners(); // Reattach listeners after content update
+        });
+      });
+
+      // Function to attach dropdown listeners
+      function attachDropdownListeners() {
+        // Top-level dropdowns
+        document.querySelectorAll(".dropdown").forEach((dropdown) => {
+          const button = dropdown.querySelector("button");
+          button.removeEventListener("click", toggleDropdown);
+          button.addEventListener("click", toggleDropdown);
+        });
+
+        // Nested dropdowns
+        document
+          .querySelectorAll(".nested-dropdown")
+          .forEach((nestedDropdown) => {
+            const button = nestedDropdown.querySelector("button");
+            button.removeEventListener("click", toggleNestedDropdown);
+            button.addEventListener("click", toggleNestedDropdown);
+          });
+      }
+
+      function toggleDropdown(e) {
+        e.stopPropagation();
+        const dropdown = this.closest(".dropdown");
+        const isActive = dropdown.classList.contains("active");
+        document.querySelectorAll(".dropdown").forEach((d) => {
+          if (d !== dropdown) d.classList.remove("active");
+        });
+        dropdown.classList.toggle("active", !isActive);
+      }
+
+      function toggleNestedDropdown(e) {
+        e.stopPropagation();
+        const nestedDropdown = this.closest(".nested-dropdown");
+        const isActive = nestedDropdown.classList.contains("active");
+        const parentDropdown = nestedDropdown.closest(".dropdown");
+        parentDropdown.querySelectorAll(".nested-dropdown").forEach((nd) => {
+          if (nd !== nestedDropdown) nd.classList.remove("active");
+        });
+        nestedDropdown.classList.toggle("active", !isActive);
+      }
+
+      // Load profile data and initialize dropdowns
+      async function loadProfileData() {
+        try {
+          const response = await fetch("/profile", { credentials: "include" });
+          if (!response.ok) {
+            if (response.status === 401) {
+              window.location.href = "/login.html";
+              return;
+            }
+            throw new Error("Failed to fetch profile data: " + response.status);
+          }
+          const data = await response.json();
+          document.getElementById("email").textContent = data.user.email;
+        } catch (error) {
+          console.error("Error loading profile data:", error.message);
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        loadProfileData();
+        attachDropdownListeners();
+      });
+
+      // Close dropdowns when clicking outside
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest(".dropdown")) {
+          document
+            .querySelectorAll(".dropdown")
+            .forEach((d) => d.classList.remove("active"));
+          document
+            .querySelectorAll(".nested-dropdown")
+            .forEach((nd) => nd.classList.remove("active"));
+        }
+      });
+    </script>
+  </body>
+</html>

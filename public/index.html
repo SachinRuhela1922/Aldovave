@@ -1,0 +1,229 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aldovave</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        secondary: '#10B981'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '4px',
+                        DEFAULT: '8px',
+                        'md': '12px',
+                        'lg': '16px',
+                        'xl': '20px',
+                        '2xl': '24px',
+                        '3xl': '32px',
+                        'full': '9999px',
+                        'button': '8px'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            min-width: 200px;
+            z-index: 50;
+        }
+        .dropdown.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-white">
+    <nav class="fixed top-0 left-0 right-0 bg-white shadow-sm z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0">
+                    <span class="text-2xl font-['Pacifico'] text-primary">Aldovave</span>
+                </div>
+               
+                <div class="flex items-center space-x-4">
+                    <button onclick="window.location.href='/login.html'" class="px-4 py-2 text-primary hover:text-primary/80 whitespace-nowrap !rounded-button">Login</button>
+                    <button onclick="window.location.href='/signup.html' " class="px-4 py-2 bg-primary text-white hover:bg-primary/90 whitespace-nowrap !rounded-button">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-16">
+        <section class="relative bg-gradient-to-r from-gray-50 to-white overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h1 class="text-5xl font-bold text-gray-900 mb-6">Transform Your Business with Cloud Solutions</h1>
+                        <p class="text-xl text-gray-600 mb-8">Empower your organization with cutting-edge cloud technology and expert consulting services. Scale efficiently, secure your data, and accelerate innovation.</p>
+                        <button onclick="window.location.href='/login.html'" class="px-8 py-4 bg-primary text-white text-lg hover:bg-primary/90 whitespace-nowrap !rounded-button">Get Started Today</button>
+                    </div>
+                    <div class="relative">
+                        <img src="./Images/Banner/banner1.jpg" alt="Hero Image" class="rounded-lg shadow-xl">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Our Services</h2>
+                    <p class="text-xl text-gray-600">Comprehensive solutions tailored to your business needs</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                        <div class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-lg mb-6">
+                            <i class="ri-cloud-line text-primary text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Cloud Infrastructure</h3>
+                        <p class="text-gray-600 mb-6">Build and manage scalable cloud infrastructure with our expert guidance and support.</p>
+                        <a href="#" class="text-primary hover:text-primary/80 font-medium">Learn More →</a>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                        <div class="w-12 h-12 flex items-center justify-center bg-secondary/10 rounded-lg mb-6">
+                            <i class="ri-shield-check-line text-secondary text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Security Solutions</h3>
+                        <p class="text-gray-600 mb-6">Protect your business with advanced security measures and continuous monitoring.</p>
+                        <a href="#" class="text-primary hover:text-primary/80 font-medium">Learn More →</a>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                        <div class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-lg mb-6">
+                            <i class="ri-database-2-line text-primary text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Data Analytics</h3>
+                        <p class="text-gray-600 mb-6">Transform your data into actionable insights with our analytics solutions.</p>
+                        <a href="#" class="text-primary hover:text-primary/80 font-medium">Learn More →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 bg-gray-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="relative">
+                        <img src="./Images/Banner/banner2.jpg" alt="Why Choose Us" class="rounded-lg shadow-xl">
+                    </div>
+                    <div>
+                        <h2 class="text-3xl font-bold text-gray-900 mb-8">Why Choose Us</h2>
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-lg mr-4">
+                                    <i class="ri-team-line text-primary text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Expert Team</h3>
+                                    <p class="text-gray-600">Our certified professionals bring years of industry experience to your projects.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-12 h-12 flex items-center justify-center bg-secondary/10 rounded-lg mr-4">
+                                    <i class="ri-24-hours-line text-secondary text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">24/7 Support</h3>
+                                    <p class="text-gray-600">Round-the-clock technical support to ensure your systems run smoothly.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-lg mr-4">
+                                    <i class="ri-secure-payment-line text-primary text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Secure Solutions</h3>
+                                    <p class="text-gray-600">Enterprise-grade security measures to protect your valuable data.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-24 bg-primary text-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-3xl font-bold mb-6">Ready to Transform Your Business?</h2>
+                <p class="text-xl mb-8 opacity-90">Join thousands of companies that trust us with their cloud infrastructure</p>
+                <button class="px-8 py-4 bg-white text-primary text-lg hover:bg-gray-100 whitespace-nowrap !rounded-button">Contact Us Now</button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <span class="text-2xl font-['Pacifico'] text-white mb-4 block">logo</span>
+                    <p class="text-gray-400">Empowering businesses through innovative cloud solutions.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Services</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Cloud Infrastructure</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Security Solutions</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Data Analytics</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Consulting</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Company</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Careers</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Connect</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 hover:bg-gray-700">
+                            <i class="ri-twitter-x-line"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 hover:bg-gray-700">
+                            <i class="ri-linkedin-line"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 hover:bg-gray-700">
+                            <i class="ri-facebook-line"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 CloudTech Solutions. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function redirectToSignin(){
+            window.location.href="./auth/signup.html";
+        }
+
+        function redirectToLogin(){
+            window.location.href="./auth/login.html";
+        }
+    </script>
+</body>
+</html>
