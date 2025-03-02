@@ -13,7 +13,7 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'X7kP9mQvL3tR8wF2nJ5sY4bZ6cA1dH0gT',
+  secret:'X7kP9mQvL3tR8wF2nJ5sY4bZ6cA1dH0gT',
   resave: false,
   saveUninitialized: false,
   store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
